@@ -6,6 +6,7 @@ import type { Template } from '../types'
 const store = useTemplateStore()
 const templates = ref<Template[]>([])
 const loading = ref(false)
+const deleting = ref<string | null>(null)
 
 async function fetchTemplates() {
   try {
@@ -32,9 +33,14 @@ async function saveTemplate() {
 }
 
 async function deleteTemplate(id: string) {
-  await fetch(`/api/templates/${id}`, { method: 'DELETE' })
-  if (store.templateId === id) store.newTemplate()
-  await fetchTemplates()
+  deleting.value = id
+  try {
+    await fetch(`/api/templates/${id}`, { method: 'DELETE' })
+    if (store.templateId === id) store.newTemplate()
+    await fetchTemplates()
+  } finally {
+    deleting.value = null
+  }
 }
 
 function loadTemplate(t: Template) {
@@ -62,9 +68,9 @@ fetchTemplates()
 <template>
   <div class="template-bar">
     <div class="bar-left">
-      <button class="btn-action" @click="newTemplate">+ New</button>
-      <button class="btn-action primary" @click="saveTemplate" :disabled="loading">Save</button>
-      <button class="btn-action" @click="exportJSON">Export JSON</button>
+      <button class="btn-action" :disabled="loading" @click="newTemplate">+ New</button>
+      <button class="btn-action primary" :disabled="loading" @click="saveTemplate">Save</button>
+      <button class="btn-action" :disabled="loading" @click="exportJSON">Export JSON</button>
     </div>
     <div class="bar-right">
       <label class="template-name-label">Template:
@@ -81,7 +87,7 @@ fetchTemplates()
   <div class="templates-list" v-if="templates.length">
     <div v-for="t in templates" :key="t.id" class="template-item">
       <span class="template-item-name" @click="loadTemplate(t)">{{ t.name }}</span>
-      <button class="btn-tiny" @click="deleteTemplate(t.id)">×</button>
+      <button class="btn-tiny" :disabled="deleting === t.id" @click="deleteTemplate(t.id)">×</button>
     </div>
   </div>
 </template>
@@ -171,4 +177,16 @@ fetchTemplates()
   font-size: 14px;
   line-height: 1;
 }
+
+.btn-tiny:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
 </style>
