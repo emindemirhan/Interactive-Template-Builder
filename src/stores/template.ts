@@ -19,7 +19,7 @@ function createDefaultElement(type: ElementType, x: number, y: number): Template
     case 'image':
       return { ...base, type: 'image', size: { width: 150, height: 120 }, url: '', altText: 'Image' }
     case 'divider':
-      return { ...base, type: 'divider', size: { width: 200, height: 2 }, color: '#e5e7eb', thickness: 2 }
+      return { ...base, type: 'divider', size: { width: 200, height: 4 }, color: '#e5e7eb', thickness: 4 }
   }
 }
 
