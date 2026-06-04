@@ -74,3 +74,7 @@ tests/
 - Copy/paste elements
 - Template preview modal
 - Responsive canvas scaling
+
+### Deployment Note
+
+The project includes a Vercel deployment configuration (`vercel.json` + `api/index.ts`). This was added as an optional deployment step per the project requirements. The Express backend is exported as a default export in `api/index.ts` so Vercel can run it as a serverless function. The `server/index.ts` file remains for local development (`npm run server`). In-memory storage resets on each cold start in serverless environments.
