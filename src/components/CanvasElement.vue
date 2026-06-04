@@ -166,7 +166,8 @@ const emit = defineEmits<{
   border-top: none;
   border-left: none;
   border-right: none;
-  margin-top: 50%;
+  position: absolute;
+  top: 50%;
   transform: translateY(-50%);
 }
 </style>

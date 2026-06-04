@@ -52,9 +52,9 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
       </aside>
       <main class="canvas-wrapper">
         <CanvasArea />
-        <div class="z-controls" v-if="store.selectedElementId">
-          <button class="btn-sm" @click="store.bringForward(store.selectedElementId!)">↑ Bring Forward</button>
-          <button class="btn-sm" @click="store.sendBackward(store.selectedElementId!)">↓ Send Backward</button>
+        <div class="z-controls">
+          <button class="btn-sm" :disabled="!store.selectedElementId" @click="store.bringForward(store.selectedElementId!)">↑ Bring Forward</button>
+          <button class="btn-sm" :disabled="!store.selectedElementId" @click="store.sendBackward(store.selectedElementId!)">↓ Send Backward</button>
         </div>
       </main>
       <aside class="sidebar-right">
@@ -151,8 +151,13 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
   font-size: 13px;
 }
 
-.btn-sm:hover {
+.btn-sm:hover:not(:disabled) {
   background: #f9fafb;
+}
+
+.btn-sm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .sidebar-right {

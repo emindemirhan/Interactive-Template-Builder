@@ -67,7 +67,14 @@ fetchTemplates()
       <button class="btn-action" @click="exportJSON">Export JSON</button>
     </div>
     <div class="bar-right">
-      <span class="template-name">Template: {{ store.templateName }}</span>
+      <label class="template-name-label">Template:
+        <input
+          type="text"
+          class="template-name-input"
+          :value="store.templateName"
+          @input="store.templateName = ($event.target as HTMLInputElement).value"
+        />
+      </label>
     </div>
   </div>
 
@@ -114,9 +121,20 @@ fetchTemplates()
   background: #4338ca;
 }
 
-.template-name {
+.template-name-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 13px;
   color: #6b7280;
+}
+
+.template-name-input {
+  padding: 4px 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 13px;
+  width: 180px;
 }
 
 .templates-list {
