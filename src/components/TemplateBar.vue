@@ -58,6 +58,30 @@ function exportJSON() {
   URL.revokeObjectURL(url)
 }
 
+function importJSON() {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = '.json'
+  input.onchange = async () => {
+    const file = input.files?.[0]
+    if (!file) return
+    try {
+      const text = await file.text()
+      const data = JSON.parse(text)
+      store.loadTemplate({
+        id: data.id ?? '',
+        name: data.name ?? 'Imported Template',
+        elements: data.elements ?? [],
+        canvasSize: data.canvasSize ?? { width: 400, height: 500 },
+        backgroundColor: data.backgroundColor ?? '#ffffff',
+        createdAt: data.createdAt ?? new Date().toISOString(),
+        updatedAt: data.updatedAt ?? new Date().toISOString(),
+      })
+    } catch { /* invalid file */ }
+  }
+  input.click()
+}
+
 function newTemplate() {
   store.newTemplate()
 }
@@ -71,6 +95,7 @@ fetchTemplates()
       <button class="btn-action" :disabled="loading" @click="newTemplate">+ New</button>
       <button class="btn-action primary" :disabled="loading" @click="saveTemplate">Save</button>
       <button class="btn-action" :disabled="loading" @click="exportJSON">Export JSON</button>
+      <button class="btn-action" @click="importJSON">Import JSON</button>
     </div>
     <div class="bar-right">
       <label class="template-name-label">Template:
