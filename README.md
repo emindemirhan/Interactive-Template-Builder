@@ -38,8 +38,9 @@ src/
 │   ├── CanvasArea.vue      # Drop zone + element drag/resize orchestration
 │   ├── CanvasElement.vue   # Renders individual template elements
 │   ├── ElementPalette.vue  # Draggable element source panel
+│   ├── PreviewModal.vue    # Template preview as end-user would see
 │   ├── PropertiesPanel.vue # Selected element property editor
-│   └── TemplateBar.vue     # Save/load/export controls
+│   └── TemplateBar.vue     # Save/load/export/import controls
 ├── stores/
 │   └── template.ts         # Pinia store with undo/redo history
 ├── types/
@@ -47,7 +48,9 @@ src/
 ├── App.vue                 # Root layout + keyboard shortcuts
 └── main.ts                 # Entry point
 server/
-└── index.ts                # Express API (GET/POST/DELETE /api/templates)
+└── index.ts                # Express API for local development
+api/
+└── index.ts                # Express API for Vercel deployment (serverless)
 tests/
 ├── template-store.test.ts  # Store logic tests
 └── element-palette.test.ts # Component rendering tests
@@ -66,14 +69,16 @@ tests/
 - In-memory storage resets on server restart (no persistence requirement)
 - Single user (no auth or concurrent editing)
 
-### Future Improvements
+### Implemented Bonus Features
 
-- Persist templates to file/database
-- Multi-select and group operations
-- Snap-to-grid and alignment guides
-- Copy/paste elements
-- Template preview modal
-- Responsive canvas scaling
+- Undo/Redo (Ctrl+Z / Ctrl+Y with history states)
+- Z-index management (Bring Forward / Send Backward)
+- Keyboard shortcuts (Delete, arrow keys for nudging, Shift+arrows for 10px nudge)
+- Template preview modal (see popup as end-user would)
+- Import template from JSON file
+- Divider element type (extra)
+
+
 
 ### Deployment Note
 
