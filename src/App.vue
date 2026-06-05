@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useTemplateStore } from './stores/template'
 import ElementPalette from './components/ElementPalette.vue'
 import CanvasArea from './components/CanvasArea.vue'
 import PropertiesPanel from './components/PropertiesPanel.vue'
 import TemplateBar from './components/TemplateBar.vue'
+import PreviewModal from './components/PreviewModal.vue'
 
 const store = useTemplateStore()
+const showPreview = ref(false)
 
 function handleKeydown(e: KeyboardEvent) {
   if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') return
@@ -42,6 +44,7 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
     <header class="app-header">
       <h1 class="app-title">Interactive Template Builder</h1>
       <div class="header-actions">
+        <button class="btn-icon" @click="showPreview = true">👁 Preview</button>
         <button class="btn-icon" :disabled="!store.canUndo" @click="store.undo()">↩ Undo</button>
         <button class="btn-icon" :disabled="!store.canRedo" @click="store.redo()">↪ Redo</button>
       </div>
@@ -64,6 +67,7 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
     <footer class="app-footer">
       <TemplateBar />
     </footer>
+    <PreviewModal v-if="showPreview" @close="showPreview = false" />
   </div>
 </template>
 
